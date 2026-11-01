@@ -12,5 +12,5 @@ Built with Next.js, React, JavaScript, CSS and MongoDB.
 
 ## Modules
 - Module 1: Water Point Discovery (`src/modules/water-discovery`)
-- Module 2: Water Point Status (`src/modules/water-status`)  - coming next
+- Module 2: Water Point Status (`src/modules/water-status`) - page: /report
 - Module 3: Maintenance Management (`src/modules/maintenance`) - coming next
