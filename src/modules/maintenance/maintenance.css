@@ -1,0 +1,270 @@
+/* Styles for Module 3 (Maintenance Management) only.
+   Every class starts with "mt-" so it never clashes with Module 1 or 2. */
+
+/* ---------- Tabs ---------- */
+.mt-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.mt-tab {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid var(--blue);
+  background: white;
+  color: var(--blue);
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.mt-tab-active {
+  background: var(--blue);
+  color: white;
+}
+
+.mt-heading {
+  color: var(--dark-blue);
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.mt-help {
+  color: var(--grey);
+  margin-bottom: 14px;
+}
+
+/* ---------- Cards ---------- */
+.mt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mt-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.mt-card h3 {
+  color: var(--dark-blue);
+}
+
+.mt-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mt-id {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--grey);
+}
+
+.mt-location {
+  color: var(--grey);
+  font-size: 14px;
+}
+
+.mt-date,
+.mt-meta {
+  color: var(--grey);
+  font-size: 13px;
+}
+
+.mt-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mt-problem {
+  line-height: 1.5;
+}
+
+.mt-done-text {
+  color: #166534;
+  font-weight: bold;
+}
+
+.mt-small-btn {
+  align-self: flex-start;
+}
+
+.mt-current-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--grey);
+}
+
+.mt-completed-box {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mt-verify {
+  color: #854d0e;
+  background: #fef9c3;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.mt-verify a {
+  color: var(--blue);
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* ---------- Forms ---------- */
+.mt-form {
+  background: #eef6ff;
+  border: 2px solid var(--blue);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mt-form h3 {
+  color: var(--dark-blue);
+}
+
+.mt-update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.mt-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.mt-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mt-form-group label {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--grey);
+}
+
+.mt-form-group input,
+.mt-form-group select,
+.mt-form-group textarea {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #1f2937;
+  background: white;
+  box-sizing: border-box;
+}
+.mt-form-group textarea {
+  resize: vertical;
+}
+
+.mt-field-error {
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.mt-char-count {
+  color: var(--grey);
+  font-size: 12px;
+  text-align: right;
+}
+
+.mt-button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mt-form .btn:disabled,
+.mt-update-form .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mt-success-box {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.mt-close {
+  background: none;
+  border: none;
+  color: #166534;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ---------- Dashboard filter buttons ---------- */
+.mt-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.mt-filter {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.mt-filter-active {
+  background: var(--dark-blue);
+  border-color: var(--dark-blue);
+  color: white;
+  font-weight: bold;
+}

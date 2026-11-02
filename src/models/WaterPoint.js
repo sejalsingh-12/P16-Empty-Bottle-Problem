@@ -24,6 +24,16 @@ const WaterPointSchema = new mongoose.Schema(
       default: "Normal",
     },
     isWorking: { type: Boolean, default: true },
+
+    // ---- Added by Module 2 (Water Point Status) ----
+    // How crowded the water point is. Old documents simply get the default.
+    usageStatus: {
+      type: String,
+      enum: ["Low", "Normal", "Crowded"],
+      default: "Normal",
+    },
+    // When a student last reported the status (null = never reported)
+    lastReportedAt: { type: Date, default: null },
   },
   { timestamps: true } // adds createdAt and updatedAt automatically
 );
