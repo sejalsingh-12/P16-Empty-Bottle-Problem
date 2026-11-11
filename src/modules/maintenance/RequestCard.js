@@ -24,11 +24,16 @@ function MaintenanceBadge({ label, colorKey }) {
 }
 
 // Shows ONE maintenance request, and a form to update it.
-export default function RequestCard({ request, onUpdated }) {
+//  - An admin can change everything.
+//  - A staff member can change only the status and the note.
+// (The server checks this again, so hiding fields here is only for convenience.)
+export default function RequestCard({ request, staff, staffList, onUpdated }) {
+  const isAdmin = staff.role === "admin";
+
   const [form, setForm] = useState({
     status: request.status,
     priority: request.priority,
-    assignedTo: request.assignedTo,
+    assignedToStaffId: request.assignedToStaffId || "",
     maintenanceNote: request.maintenanceNote,
   });
   const [errors, setErrors] = useState({});
@@ -38,6 +43,9 @@ export default function RequestCard({ request, onUpdated }) {
 
   const isCompleted = request.status === "Completed";
   const waterPoint = request.waterPoint;
+
+  // Is the current assignee missing from the active staff list? (deactivated)
+  const assigneeInList = staffList.some((member) => member._id === request.assignedToStaffId);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -50,22 +58,32 @@ export default function RequestCard({ request, onUpdated }) {
     setServerError("");
 
     // 1. Check the form BEFORE sending it
-    const validationErrors = validateUpdate(form);
+    const validationErrors = validateUpdate(form, isAdmin);
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
       return;
     }
 
-    // 2. Send the update to the API
+    // 2. Send only what this person is allowed to change
+    const dataToSend = isAdmin
+      ? form
+      : { status: form.status, maintenanceNote: form.maintenanceNote };
+
     setSaving(true);
 
     try {
       const response = await fetch("/api/maintenance/requests/" + request._id, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(dataToSend),
       });
+
+      if (response.status === 401) {
+        window.location.href = "/login";
+        return;
+      }
+
       const result = await response.json();
 
       if (result.success) {
@@ -155,28 +173,51 @@ export default function RequestCard({ request, onUpdated }) {
               {errors.status && <span className="mt-field-error">{errors.status}</span>}
             </div>
 
-            <div className="mt-form-group">
-              <label>Priority</label>
-              <select name="priority" value={form.priority} onChange={handleChange}>
-                {priorityOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              {errors.priority && <span className="mt-field-error">{errors.priority}</span>}
-            </div>
+            {/* Priority and assigned staff: ADMIN only */}
+            {isAdmin && (
+              <>
+                <div className="mt-form-group">
+                  <label>Priority</label>
+                  <select name="priority" value={form.priority} onChange={handleChange}>
+                    {priorityOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.priority && <span className="mt-field-error">{errors.priority}</span>}
+                </div>
 
-            <div className="mt-form-group">
-              <label>Assigned Staff Member</label>
-              <input
-                type="text"
-                name="assignedTo"
-                value={form.assignedTo}
-                onChange={handleChange}
-              />
-              {errors.assignedTo && <span className="mt-field-error">{errors.assignedTo}</span>}
-            </div>
+                <div className="mt-form-group">
+                  <label>Assigned Staff Member</label>
+                  <select
+                    name="assignedToStaffId"
+                    value={form.assignedToStaffId}
+                    onChange={handleChange}
+                  >
+                    <option value="">-- Select staff --</option>
+                    {request.assignedToStaffId && !assigneeInList && (
+                      <option value={request.assignedToStaffId}>
+                        {request.assignedTo} (deactivated)
+                      </option>
+                    )}
+                    {staffList.map((member) => (
+                      <option key={member._id} value={member._id}>
+                        {member.name} (@{member.username})
+                      </option>
+                    ))}
+                  </select>
+                  {!request.assignedToStaffId && (
+                    <span className="mt-field-error">
+                      This older request is not linked to a staff account yet. Please choose one.
+                    </span>
+                  )}
+                  {errors.assignedToStaffId && (
+                    <span className="mt-field-error">{errors.assignedToStaffId}</span>
+                  )}
+                </div>
+              </>
+            )}
           </div>
 
           <div className="mt-form-group">

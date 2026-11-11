@@ -1,8 +1,12 @@
 import RequestCard from "./RequestCard";
 import { filterOptions } from "./maintenanceOptions";
 
-// Shows ALL maintenance requests, with filter buttons.
+// Shows maintenance requests, with filter buttons.
+// The server only sends the requests this person is allowed to see:
+// an admin gets all of them, a staff member gets only their own.
 export default function RequestDashboard({
+  staff,
+  staffList,
   requests,
   statusFilter,
   setStatusFilter,
@@ -10,9 +14,13 @@ export default function RequestDashboard({
   successMessage,
   clearSuccessMessage,
 }) {
+  const isAdmin = staff.role === "admin";
+
   return (
     <section>
-      <h2 className="mt-heading">Maintenance Dashboard</h2>
+      <h2 className="mt-heading">
+        {isAdmin ? "Maintenance Dashboard" : "My Assigned Requests"}
+      </h2>
 
       {successMessage && (
         <div className="mt-success-box">
@@ -39,7 +47,13 @@ export default function RequestDashboard({
 
       {requests.length === 0 ? (
         <div className="message">
-          No maintenance requests found. Create one from the <b>Student Reports</b> tab.
+          {isAdmin ? (
+            <>
+              No maintenance requests found. Create one from the <b>Student Reports</b> tab.
+            </>
+          ) : (
+            "No requests are assigned to you right now."
+          )}
         </div>
       ) : (
         <div className="mt-list">
@@ -47,6 +61,8 @@ export default function RequestDashboard({
             <RequestCard
               key={request._id}
               request={request}
+              staff={staff}
+              staffList={staffList}
               onUpdated={onRequestUpdated}
             />
           ))}

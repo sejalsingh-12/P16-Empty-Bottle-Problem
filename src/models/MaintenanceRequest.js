@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-// One document = ONE maintenance request created by staff.
+// One document = ONE maintenance request created by an admin.
 const MaintenanceRequestSchema = new mongoose.Schema(
   {
     // The student report (Module 2) this request came from.
@@ -20,7 +20,18 @@ const MaintenanceRequestSchema = new mongoose.Schema(
       enum: ["Low", "Medium", "High"],
       default: "Medium",
     },
+
+    // The staff ACCOUNT this request is assigned to (links to the Staff model).
+    // It is empty (null) for old requests created before the login system.
+    assignedToStaffId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff",
+      default: null,
+      index: true,
+    },
+    // The staff member's NAME, saved for easy display
     assignedTo: { type: String, required: true, maxlength: 50 },
+
     status: {
       type: String,
       enum: ["Pending", "In Progress", "Completed"],

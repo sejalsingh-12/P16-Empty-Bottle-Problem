@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { priorityOptions, MAX_TEXT_LENGTH } from "./maintenanceOptions";
 import { validateNewRequest } from "./validateRequest";
 
 // A form to create a maintenance request from ONE student report.
 // The issue description and priority are pre-filled from the report.
-export default function CreateRequestForm({ report, onCreated, onCancel }) {
+// The staff member is chosen from the list of real staff accounts.
+export default function CreateRequestForm({ report, staffList, onCreated, onCancel }) {
   const [form, setForm] = useState({
     issueDescription: report.problem,
     priority: report.suggestedPriority,
-    assignedTo: "",
+    assignedToStaffId: "",
   });
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
@@ -29,7 +31,7 @@ export default function CreateRequestForm({ report, onCreated, onCancel }) {
       statusReportId: report._id,
       issueDescription: form.issueDescription,
       priority: form.priority,
-      assignedTo: form.assignedTo,
+      assignedToStaffId: form.assignedToStaffId,
     };
 
     // 1. Check the form BEFORE sending it
@@ -49,6 +51,12 @@ export default function CreateRequestForm({ report, onCreated, onCancel }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
+
+      if (response.status === 401) {
+        window.location.href = "/login";
+        return;
+      }
+
       const result = await response.json();
 
       if (result.success) {
@@ -103,15 +111,28 @@ export default function CreateRequestForm({ report, onCreated, onCancel }) {
         </div>
 
         <div className="mt-form-group">
-          <label>Assigned Staff Member</label>
-          <input
-            type="text"
-            name="assignedTo"
-            placeholder="Example: Ramesh Kumar"
-            value={form.assignedTo}
+          <label>Assign To (Staff Member)</label>
+          <select
+            name="assignedToStaffId"
+            value={form.assignedToStaffId}
             onChange={handleChange}
-          />
-          {errors.assignedTo && <span className="mt-field-error">{errors.assignedTo}</span>}
+          >
+            <option value="">-- Select staff --</option>
+            {staffList.map((member) => (
+              <option key={member._id} value={member._id}>
+                {member.name} (@{member.username})
+              </option>
+            ))}
+          </select>
+          {staffList.length === 0 && (
+            <span className="mt-field-error">
+              No staff accounts yet. Add one on the{" "}
+              <Link href="/admin/staff">Manage Staff</Link> page.
+            </span>
+          )}
+          {errors.assignedToStaffId && (
+            <span className="mt-field-error">{errors.assignedToStaffId}</span>
+          )}
         </div>
       </div>
 

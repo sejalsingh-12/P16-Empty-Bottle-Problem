@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
+import { requireAdmin } from "@/lib/auth";
 import WaterPoint from "@/models/WaterPoint";
 import WaterStatusReport from "@/models/WaterStatusReport";
 import MaintenanceRequest from "@/models/MaintenanceRequest";
@@ -9,10 +10,14 @@ import {
   suggestPriority,
 } from "@/modules/maintenance/maintenanceOptions";
 
-// GET /api/maintenance/reports
+// GET /api/maintenance/reports   (ADMIN ONLY)
 // Returns the student reports (Module 2) that need maintenance attention.
 // Each report also shows the water point name and whether a request exists.
 export async function GET() {
+  // Server-side protection: stop here if the person is not a logged-in admin
+  const { error } = await requireAdmin();
+  if (error) return error;
+
   try {
     await connectDB();
 
