@@ -2,13 +2,12 @@ import {
   statusOptions,
   priorityOptions,
   MAX_TEXT_LENGTH,
-  MAX_STAFF_NAME_LENGTH,
 } from "./maintenanceOptions";
 
 // Both functions return an object of error messages.
 // An EMPTY object {} means everything is valid.
 
-// Used when staff CREATE a request from a student report
+// Used when an ADMIN creates a request from a student report
 export function validateNewRequest(data) {
   const errors = {};
 
@@ -26,31 +25,21 @@ export function validateNewRequest(data) {
     errors.priority = "Please choose a priority.";
   }
 
-  if (!data.assignedTo || data.assignedTo.trim() === "") {
-    errors.assignedTo = "Please enter the assigned staff member's name.";
-  } else if (data.assignedTo.length > MAX_STAFF_NAME_LENGTH) {
-    errors.assignedTo = `Staff name must be ${MAX_STAFF_NAME_LENGTH} characters or less.`;
+  if (!data.assignedToStaffId) {
+    errors.assignedToStaffId = "Please choose a staff member to assign.";
   }
 
   return errors;
 }
 
-// Used when staff UPDATE an existing request
-export function validateUpdate(data) {
+// Used when someone UPDATES an existing request.
+//  - Everyone checks the status and the note.
+//  - Only an admin (isAdmin = true) also changes priority and assigned staff.
+export function validateUpdate(data, isAdmin) {
   const errors = {};
 
   if (!statusOptions.includes(data.status)) {
     errors.status = "Please choose a status.";
-  }
-
-  if (!priorityOptions.includes(data.priority)) {
-    errors.priority = "Please choose a priority.";
-  }
-
-  if (!data.assignedTo || data.assignedTo.trim() === "") {
-    errors.assignedTo = "Please enter the assigned staff member's name.";
-  } else if (data.assignedTo.length > MAX_STAFF_NAME_LENGTH) {
-    errors.assignedTo = `Staff name must be ${MAX_STAFF_NAME_LENGTH} characters or less.`;
   }
 
   if (data.maintenanceNote && data.maintenanceNote.length > MAX_TEXT_LENGTH) {
@@ -64,6 +53,16 @@ export function validateUpdate(data) {
   ) {
     errors.maintenanceNote =
       "Please write a note about the repair or action taken before marking Completed.";
+  }
+
+  if (isAdmin) {
+    if (!priorityOptions.includes(data.priority)) {
+      errors.priority = "Please choose a priority.";
+    }
+
+    if (!data.assignedToStaffId) {
+      errors.assignedToStaffId = "Please choose a staff member to assign.";
+    }
   }
 
   return errors;

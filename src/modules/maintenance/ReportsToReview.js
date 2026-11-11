@@ -4,9 +4,9 @@ import { useState } from "react";
 import StatusBadge from "@/components/shared/StatusBadge";
 import CreateRequestForm from "./CreateRequestForm";
 
-// Lists the student reports that need maintenance attention.
-export default function ReportsToReview({ reports, onRequestCreated }) {
-  // The report the staff member clicked "Create Request" on (or null)
+// Lists the student reports that need maintenance attention (admin only).
+export default function ReportsToReview({ reports, staffList, onRequestCreated }) {
+  // The report the admin clicked "Create Request" on (or null)
   const [selectedReport, setSelectedReport] = useState(null);
 
   function handleCreated(message) {
@@ -25,6 +25,7 @@ export default function ReportsToReview({ reports, onRequestCreated }) {
       {selectedReport && (
         <CreateRequestForm
           report={selectedReport}
+          staffList={staffList}
           onCreated={handleCreated}
           onCancel={() => setSelectedReport(null)}
         />

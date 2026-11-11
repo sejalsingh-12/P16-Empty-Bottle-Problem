@@ -1,0 +1,184 @@
+/* Styles for the login / staff accounts part only.
+   Every class starts with "sa-" so it never clashes with other modules. */
+
+/* ---------- Login page ---------- */
+.sa-login-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+}
+
+.sa-login-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.sa-login-box h1 {
+  color: var(--dark-blue);
+  font-size: 26px;
+}
+
+.sa-login-text {
+  color: var(--grey);
+  font-size: 14px;
+}
+
+/* ---------- Forms ---------- */
+.sa-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sa-form-group label {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--grey);
+}
+
+.sa-form-group input,
+.sa-reset-box input {
+  padding: 9px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+}
+
+.sa-field-error {
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.sa-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.sa-login-box .btn:disabled,
+.sa-add-form .btn:disabled,
+.sa-staff-bar .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sa-small {
+  padding: 7px 14px;
+  font-size: 14px;
+}
+
+/* ---------- Staff bar (top of the dashboard) ---------- */
+.sa-staff-bar {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sa-role {
+  color: var(--grey);
+}
+
+.sa-bar-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Staff management page ---------- */
+.sa-add-form {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sa-add-form h2,
+.sa-list-title {
+  color: var(--dark-blue);
+  font-size: 20px;
+}
+
+.sa-add-form .btn {
+  align-self: flex-start;
+}
+
+.sa-list-title {
+  margin: 26px 0 12px 0;
+}
+
+.sa-staff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sa-staff-row {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sa-staff-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sa-username {
+  color: var(--grey);
+  font-size: 14px;
+}
+
+.sa-row-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sa-reset-box {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sa-reset-box input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.sa-success-box {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
